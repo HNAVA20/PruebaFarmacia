@@ -509,33 +509,40 @@ if (userMenu && userMenuBtn) {
 
 
 /* ======================================================
-   ADMIN: TABS (Productos / Usuarios / Pedidos / Documentos)
-   - Muestra/oculta paneles sin recargar
+   ADMIN: botón + abre formulario agregar producto
    ====================================================== */
-const adminTabs = document.querySelectorAll(".adminTabs__tab");
-const adminPanels = document.querySelectorAll(".adminPanel");
+const adminPage = document.querySelector("#adminPage");
+if (adminPage) {
+  const listView = document.querySelector("#adminListView");
+  const formView = document.querySelector("#adminFormView");
 
-if (adminTabs.length && adminPanels.length) {
-  const showPanel = (key) => {
-    adminPanels.forEach((p) => {
-      const match = p.getAttribute("data-panel") === key;
-      p.hidden = !match;
-    });
+  const openBtn = document.querySelector("#adminOpenProductForm");
+  const closeBtn = document.querySelector("#adminCloseProductForm");
 
-    adminTabs.forEach((b) => {
-      const isActive = b.getAttribute("data-tab") === key;
-      b.classList.toggle("is-active", isActive);
-      b.setAttribute("aria-selected", isActive ? "true" : "false");
-    });
+  const imgInput = document.querySelector("#adminImageInput");
+  const imgPreview = document.querySelector("#adminImagePreview");
+
+  const openForm = () => {
+    if (listView) listView.hidden = true;
+    if (formView) formView.hidden = false;
   };
 
-  adminTabs.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      const key = btn.getAttribute("data-tab");
-      if (!key) return;
-      showPanel(key);
+  const closeForm = () => {
+    if (formView) formView.hidden = true;
+    if (listView) listView.hidden = false;
+  };
+
+  if (openBtn) openBtn.addEventListener("click", openForm);
+  if (closeBtn) closeBtn.addEventListener("click", closeForm);
+
+  // Preview de imagen al seleccionar archivo
+  if (imgInput && imgPreview) {
+    imgInput.addEventListener("change", () => {
+      const file = imgInput.files?.[0];
+      if (!file) return;
+      imgPreview.src = URL.createObjectURL(file);
     });
-  });
+  }
 }
 
 });

@@ -5,178 +5,146 @@
 @section('body_class', 'page-admin')
 
 @section('content')
+
+<main class="admin" id="adminPage">
+
+  <!-- Barra verde -->
+  <section class="admin__titlebar">
+    <span class="admin__title">Administrar</span>
+  </section>
+
+  <!-- Tabs -->
+  <nav class="adminTabs" aria-label="Secciones administrar">
+    <a class="adminTabs__tab is-active" href="{{ url('/administrar') }}">Productos</a>
+    <a class="adminTabs__tab" href="{{ url('/administrar/usuarios') }}">Usuarios</a>
+    <a class="adminTabs__tab" href="{{ url('/administrar/pedidos') }}">Pedidos</a>
+    <a class="adminTabs__tab" href="{{ url('/administrar/documentos') }}">Documentos</a>
+  </nav>
+
   <!-- ======================================================
-       ADMINISTRAR
+       VISTA 1: LISTA DE PRODUCTOS (por defecto)
        ====================================================== -->
-  <main class="admin">
+  <section class="adminList" id="adminListView">
 
-    <!-- Barra verde -->
-    <section class="admin__titlebar">
-      <span class="admin__title">Administrar</span>
-    </section>
+    <div class="adminBar">
+      <div class="adminBar__search">
+        <span class="adminBar__searchIcon">🔍</span>
+        <input class="adminBar__input" type="text" placeholder="Buscar...">
+      </div>
 
-    <!-- Tabs -->
-    <div class="adminTabs" role="tablist" aria-label="Secciones de administración">
-      <button class="adminTabs__tab is-active" type="button" data-tab="productos" role="tab" aria-selected="true">Productos</button>
-      <button class="adminTabs__tab" type="button" data-tab="usuarios" role="tab" aria-selected="false">Usuarios</button>
-      <button class="adminTabs__tab" type="button" data-tab="pedidos" role="tab" aria-selected="false">Pedidos</button>
-      <button class="adminTabs__tab" type="button" data-tab="documentos" role="tab" aria-selected="false">Documentos</button>
+      <!-- ✅ BOTÓN VERDE: abre el formulario -->
+      <button class="adminBar__add" id="adminOpenProductForm" type="button" aria-label="Agregar producto">+</button>
     </div>
 
-    <!-- ======================================================
-         PANEL: PRODUCTOS (tabla)
-         ====================================================== -->
-    <section class="adminPanel" data-panel="productos">
-
-      <!-- Buscador + botón agregar -->
-      <div class="adminBar">
-        <div class="adminBar__search">
-          <span class="adminBar__searchIcon">🔍</span>
-          <input class="adminBar__input" type="text" placeholder="Buscar..." aria-label="Buscar">
-        </div>
-
-        <button class="adminBar__add" type="button" aria-label="Agregar">+</button>
+    <div class="adminTable">
+      <div class="adminTable__head">
+        <span>Nombre</span>
+        <span>Código</span>
+        <span>Precio</span>
+        <span>Existencia</span>
+        <span>Estatus</span>
+        <span>Acciones</span>
+        <span>Imagen</span>
       </div>
 
-      <!-- Tabla -->
-      <section class="adminTable" aria-label="Tabla de productos">
-        <div class="adminTable__head" role="row">
-          <span>Nombre</span>
-          <span>Código</span>
-          <span>Precio</span>
-          <span>Existencia</span>
-          <span>Estatus</span>
-          <span>Acciones</span>
-          <span>Imagen</span>
-        </div>
-
-        <!-- FILA 1 -->
-        <div class="adminTable__row" role="row">
-          <span class="adminTable__cell adminTable__name">Neurotin</span>
-          <span class="adminTable__cell">215369</span>
-          <span class="adminTable__cell">$28.50</span>
-          <span class="adminTable__cell">1,500</span>
-          <span class="adminTable__cell adminTable__status">Activo</span>
-
-          <div class="adminTable__cell adminTable__actions">
-            <button class="adminBtn adminBtn--edit" type="button">Editar</button>
-            <button class="adminBtn adminBtn--del" type="button">Borrar</button>
-          </div>
-
-          <div class="adminTable__cell adminTable__imgWrap">
-            <img class="adminTable__img" src="/img/cuadro rojo.jpg" alt="Neurotin">
-          </div>
-        </div>
-
-        <!-- FILA 2 -->
-        <div class="adminTable__row" role="row">
-          <span class="adminTable__cell adminTable__name">Neurotin</span>
-          <span class="adminTable__cell">215369</span>
-          <span class="adminTable__cell">$28.50</span>
-          <span class="adminTable__cell">1,500</span>
-          <span class="adminTable__cell adminTable__status">Activo</span>
-
-          <div class="adminTable__cell adminTable__actions">
-            <button class="adminBtn adminBtn--edit" type="button">Editar</button>
-            <button class="adminBtn adminBtn--del" type="button">Borrar</button>
-          </div>
-
-          <div class="adminTable__cell adminTable__imgWrap">
-            <img class="adminTable__img" src="/img/cuadro rojo.jpg" alt="Neurotin">
-          </div>
-        </div>
-
-        <!-- FILA 3 -->
-        <div class="adminTable__row" role="row">
-          <span class="adminTable__cell adminTable__name">Neurotin</span>
-          <span class="adminTable__cell">215369</span>
-          <span class="adminTable__cell">$28.50</span>
-          <span class="adminTable__cell">1,500</span>
-          <span class="adminTable__cell adminTable__status">Activo</span>
-
-          <div class="adminTable__cell adminTable__actions">
-            <button class="adminBtn adminBtn--edit" type="button">Editar</button>
-            <button class="adminBtn adminBtn--del" type="button">Borrar</button>
-          </div>
-
-          <div class="adminTable__cell adminTable__imgWrap">
-            <img class="adminTable__img" src="/img/cuadro rojo.jpg" alt="Neurotin">
-          </div>
-        </div>
-      </section>
-
-      <!-- Paginación -->
-      <div class="pager">
-        <button class="pager__btn" type="button" aria-label="Primera">«</button>
-        <button class="pager__btn" type="button" aria-label="Anterior">‹</button>
-
-        <button class="pager__dot is-active" type="button" aria-label="Página 1"></button>
-        <button class="pager__dot" type="button" aria-label="Página 2"></button>
-        <button class="pager__dot" type="button" aria-label="Página 3"></button>
-
-        <button class="pager__btn" type="button" aria-label="Siguiente">›</button>
-        <button class="pager__btn" type="button" aria-label="Última">»</button>
+      <!-- Filas demo -->
+      <div class="adminTable__row">
+        <span class="adminTable__name">Neurotin</span>
+        <span>215369</span>
+        <span>$28.50</span>
+        <span>1,500</span>
+        <span>Activo</span>
+        <span class="adminTable__actions">
+          <button class="adminTable__btn adminTable__btn--ok" type="button">Editar</button>
+          <button class="adminTable__btn adminTable__btn--del" type="button">Borrar</button>
+        </span>
+        <span class="adminTable__img">
+          <img src="/img/cuadro rojo.jpg" alt="Producto">
+        </span>
       </div>
-    </section>
 
-    <!-- ======================================================
-         PANEL: USUARIOS (FORM como tu imagen)
-         ====================================================== -->
-    <section class="adminPanel" data-panel="usuarios" hidden>
+      <div class="adminTable__row">
+        <span class="adminTable__name">Neurotin</span>
+        <span>215369</span>
+        <span>$28.50</span>
+        <span>1,500</span>
+        <span>Activo</span>
+        <span class="adminTable__actions">
+          <button class="adminTable__btn adminTable__btn--ok" type="button">Editar</button>
+          <button class="adminTable__btn adminTable__btn--del" type="button">Borrar</button>
+        </span>
+        <span class="adminTable__img">
+          <img src="/img/cuadro rojo.jpg" alt="Producto">
+        </span>
+      </div>
 
-      <form class="adminForm" action="#" method="post" enctype="multipart/form-data">
-        <div class="adminForm__grid">
-          <!-- COLUMNA IZQUIERDA -->
-          <div class="adminForm__col">
-            <label class="adminForm__label" for="u_name">Nombre:</label>
-            <input class="adminForm__input" id="u_name" name="name" type="text">
+      <div class="adminTable__row">
+        <span class="adminTable__name">Neurotin</span>
+        <span>215369</span>
+        <span>$28.50</span>
+        <span>1,500</span>
+        <span>Activo</span>
+        <span class="adminTable__actions">
+          <button class="adminTable__btn adminTable__btn--ok" type="button">Editar</button>
+          <button class="adminTable__btn adminTable__btn--del" type="button">Borrar</button>
+        </span>
+        <span class="adminTable__img">
+          <img src="/img/cuadro rojo.jpg" alt="Producto">
+        </span>
+      </div>
+    </div>
 
-            <label class="adminForm__label" for="u_price">Precio:</label>
-            <input class="adminForm__input" id="u_price" name="price" type="text">
+  </section>
 
-            <label class="adminForm__label" for="u_desc">Descripción:</label>
-            <textarea class="adminForm__textarea" id="u_desc" name="desc"></textarea>
+  <!-- ======================================================
+       VISTA 2: FORMULARIO AGREGAR PRODUCTO (como tu imagen)
+       ====================================================== -->
+  <section class="adminForm" id="adminFormView" hidden>
 
-            <label class="adminCheck">
-              <input type="checkbox" checked>
-              <span class="adminCheck__box"></span>
-              <span>Oferta</span>
-            </label>
-          </div>
+    <!-- botón regresar (verde) -->
+    <button class="adminForm__back" id="adminCloseProductForm" type="button" aria-label="Regresar">←</button>
 
-          <!-- COLUMNA DERECHA -->
-          <div class="adminForm__col">
-            <label class="adminForm__label" for="u_code">Código:</label>
-            <input class="adminForm__input" id="u_code" name="code" type="text">
+    <form class="adminForm__grid" action="#" method="post" enctype="multipart/form-data">
 
-            <label class="adminForm__label" for="u_stock">Existencia:</label>
-            <input class="adminForm__input" id="u_stock" name="stock" type="text">
+      <!-- Columna izquierda -->
+      <div class="adminForm__col">
+        <label class="adminForm__label">Nombre:</label>
+        <input class="adminForm__input" type="text">
 
-            <div class="adminForm__preview">
-              <img class="adminForm__previewImg" src="/img/cuadro rojo.jpg" alt="Preview">
-            </div>
+        <label class="adminForm__label">Precio:</label>
+        <input class="adminForm__input" type="text">
 
-            <label class="adminForm__fileBtn">
-              Seleccionar imagen
-              <input class="adminForm__file" type="file" accept="image/*">
-            </label>
-          </div>
+        <label class="adminForm__label">Descripción:</label>
+        <textarea class="adminForm__textarea"></textarea>
+
+        <label class="adminForm__check">
+          <input type="checkbox">
+          <span class="adminForm__checkBox"></span>
+          <span>Oferta</span>
+        </label>
+      </div>
+
+      <!-- Columna derecha -->
+      <div class="adminForm__col adminForm__col--right">
+        <label class="adminForm__label">Código:</label>
+        <input class="adminForm__input" type="text">
+
+        <label class="adminForm__label">Existencia:</label>
+        <input class="adminForm__input" type="text">
+
+        <div class="adminForm__preview">
+          <img id="adminImagePreview" src="/img/cuadro rojo.jpg" alt="Vista previa">
         </div>
 
-        <div class="adminForm__actions">
-          <button class="adminForm__save" type="submit">GUARDAR</button>
-        </div>
-      </form>
-    </section>
+        <input id="adminImageInput" class="adminForm__file" type="file" accept="image/*">
+        <label class="adminForm__fileBtn" for="adminImageInput">Seleccionar imagen</label>
 
-    <!-- (Opcionales) placeholders -->
-    <section class="adminPanel" data-panel="pedidos" hidden>
-      <div style="padding:14px;font-weight:900;opacity:.7">Pendiente: Pedidos</div>
-    </section>
+        <button class="adminForm__save" type="button">GUARDAR</button>
+      </div>
 
-    <section class="adminPanel" data-panel="documentos" hidden>
-      <div style="padding:14px;font-weight:900;opacity:.7">Pendiente: Documentos</div>
-    </section>
+    </form>
+  </section>
 
-  </main>
+</main>
+
 @endsection
