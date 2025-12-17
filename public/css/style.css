@@ -1,0 +1,2129 @@
+/* ======================================================
+   0) RESET + VARIABLES
+   ====================================================== */
+
+/* Reset básico */
+*{margin:0;padding:0;box-sizing:border-box}
+
+/* Variables */
+:root{
+  --blue:#0b78c6;
+  --nav-h:80px;
+  --pad-x:28px;
+  --side-w:140px;
+  --img-h:40px;
+  --gap:34px;
+  --fs:22px;
+
+  --banner-h:260px;
+
+  /* Promo (barra verde) */
+  --promo-h:56px;
+  --promo-bg:#0aa84f;
+  --promo-fs:22px;
+  --promo-radius:16px;
+  --promo-my:14px;
+
+  /* Contenedor general (promo + shopbar + productos + pager) */
+  --products-max:1200px;
+  --products-pad:40px;
+  --products-gap:22px;
+
+  /* Cards producto */
+  --card-radius:16px;
+  --card-shadow:0 10px 25px rgba(0,0,0,.18);
+  --card-border:1px solid rgba(0,0,0,.06);
+
+  /* Badge descuento */
+  --badge-bg:#e11;
+  --badge-fs:16px;
+
+  /* Botones */
+  --btn-radius:999px;
+
+  /* Contacto */
+  --contact-max: min(var(--products-max), calc(100% - var(--products-pad)));
+  --contact-radius:22px;
+  --contact-gap:22px;
+  --contact-panel-pad:18px;
+  --contact-icon:34px;
+
+  /* Footer */
+  --footer-h:420px;
+  --footer-left-pad:70px;
+  --footer-form-w:320px;
+  --footer-radius:0px;
+
+  /* CARD-CARRITO */
+  --toast-w: 520px;
+  --toast-radius: 22px;
+  --toast-shadow: 0 18px 40px rgba(0,0,0,.25);
+
+  /* CARRITO */
+  --cart-max: min(var(--products-max), calc(100% - var(--products-pad)));
+  --cart-border: 2px solid rgba(11,120,198,.55);
+  --cart-card-bg: #f3f3f3;
+  --cart-radius: 16px;
+  --cart-gap: 18px;
+
+  --tax-rate: .16; /* cámbialo si necesitas (16%) */
+
+    /* CONFIRMACIÓN PEDIDO */
+  --orderok-w: 560px;
+  --orderok-radius: 6px;
+}
+
+/* ======================================================
+   1) BASE
+   ====================================================== */
+body{
+  margin:0;
+  padding-top:var(--nav-h);
+  font-family:"Montserrat",sans-serif;
+}
+
+/* ======================================================
+   2) NAVBAR
+   ====================================================== */
+.navbar{
+  position:fixed;
+  top:0;left:0;width:100%;
+  height:var(--nav-h);
+  background:var(--blue);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 var(--pad-x);
+  z-index:1000;
+}
+
+/* Lados (logo / user) */
+.navbar__logo,.navbar__user{
+  width:var(--side-w);
+  display:flex;
+  align-items:center;
+  text-decoration:none;
+}
+.navbar__logo{justify-content:flex-start}
+.navbar__user{justify-content:flex-end}
+
+/* Imágenes */
+.navbar__logo-img,.navbar__user-img{
+  height:var(--img-h);
+  width:auto;
+  display:block;
+}
+
+/* Links (PC/Tablet) */
+.navbar__links{
+  list-style:none;
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:var(--gap);
+}
+.navbar__link{
+  color:#fff;
+  text-decoration:none;
+  font-size:var(--fs);
+  font-weight:500;
+  line-height:1;
+}
+.navbar__link:hover{ text-decoration:underline }
+
+/* Drawer móvil: ocultos por defecto */
+.navbar__toggle-open,
+.navbar__toggle-close,
+.navbar__overlay,
+.navbar__mobile-header{ display:none }
+
+/* =========================
+   USER MENU (Administrar/Salir)
+   ========================= */
+.userMenu{
+  width: var(--side-w);
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  position:relative;
+}
+
+/* Botón (usa tu imagen .navbar__user-img) */
+.userMenu__btn{
+  background:transparent;
+  border:0;
+  padding:0;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+}
+
+/* Dropdown */
+.userMenu__dropdown{
+  position:absolute;
+  top: calc(100% + 8px);
+  right: 0;
+
+  background: var(--blue);
+  border-radius: 12px;
+  padding: 8px 10px;
+  min-width: 150px;
+
+  box-shadow: 0 10px 25px rgba(0,0,0,.18);
+  display:none;
+  z-index: 2000;
+}
+
+.userMenu.is-open .userMenu__dropdown{ display:block; }
+
+.userMenu__item{
+  display:block;
+  padding: 10px 12px;
+  border-radius: 10px;
+  text-decoration:none;
+  color:#fff;
+  font-weight:700;
+  font-size:14px;
+  text-align:left;
+}
+
+.userMenu__item:hover{
+  background: rgba(255,255,255,.14);
+}
+
+/* ======================================================
+   3) BANNER
+   ====================================================== */
+.banner{
+  width:100%;
+  height:var(--banner-h);
+  overflow:hidden;
+}
+.banner__img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
+
+/* ======================================================
+   4) PROMO (BARRA VERDE)
+   ====================================================== */
+.promo{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:var(--promo-my) auto;
+  height:var(--promo-h);
+  background:var(--promo-bg);
+  border-radius:var(--promo-radius);
+  display:flex;
+  align-items:center;
+  justify-content:flex-start;
+  padding:0 50px;
+}
+.promo__text{
+  color:#fff;
+  font-size:var(--promo-fs);
+  font-weight:700;
+  font-style:italic;
+  text-align:left;
+  line-height:1;
+}
+
+/* ======================================================
+   5) SHOPBAR (BUSCADOR / CATEGORÍAS / CARRITO)
+   + BREADCRUMBS
+   ====================================================== */
+.shopbar{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:10px auto 6px;
+}
+
+.shopbar__row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:16px;
+}
+
+/* Buscador (borde azul) */
+.shopbar__search{
+  flex:1;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  height:34px;
+  border:2px solid var(--blue);
+  border-radius:999px;
+  padding:0 12px;
+  background:#fff;
+}
+.shopbar__searchIcon{font-size:14px;opacity:.7}
+
+.shopbar__input{
+  width:100%;
+  border:0;
+  outline:none;
+  font-size:13px;
+  background:transparent;
+}
+
+/* Acciones: select + carrito */
+.shopbar__actions{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* Selector categorías (borde azul) */
+.shopbar__select{
+  height:34px;
+  border-radius:999px;
+  border:2px solid var(--blue);
+  padding:0 12px;
+  font-size:13px;
+  background:#fff;
+  color:#1b1b1b;
+}
+
+/* Carrito + badge */
+.shopbar__cart{
+  position:relative;
+  width:44px;
+  height:44px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  text-decoration:none;
+  color:#1b1b1b;
+}
+.shopbar__cartIcon{font-size:28px}
+
+.shopbar__cartBadge{
+  position:absolute;
+  top:4px;right:4px;
+  min-width:18px;
+  height:18px;
+  border-radius:999px;
+  background:var(--promo-bg);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:11px;
+  font-weight:900;
+  padding:0 5px;
+}
+
+/* Breadcrumbs */
+.crumbs{
+  margin-top:8px;
+  font-size:12px;
+  color:#0b63a8;
+}
+.crumbs__link{
+  color:#0b63a8;
+  text-decoration:underline;
+}
+.crumbs__sep{margin:0 6px;color:#0b63a8}
+.crumbs__current{color:#0b63a8;font-weight:700}
+
+/* ======================================================
+   6) PRODUCTOS (GRID + CARDS)
+   ====================================================== */
+.products{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:18px auto 24px;
+  display:grid;
+  grid-template-columns:repeat(4, 1fr); /* 8 productos: 2 filas de 4 */
+  gap:var(--products-gap);
+}
+.products--page{ margin-top:10px; }
+
+.card{
+  background:#fff;
+  border-radius:18px;
+  box-shadow:var(--card-shadow);
+  border:var(--card-border);
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Marco azul de arriba */
+.card__top{
+  border:2px solid var(--blue);
+  border-radius:18px 18px 0 0;
+  padding:10px;
+  padding-bottom:0;
+}
+
+/* Imagen */
+.card__imgWrap{
+  position:relative;
+  background:#fff;
+  height:170px;
+  border-radius:10px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px;
+}
+.card__img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+/* Badge descuento (óvalo) */
+.card__badge{
+  position:absolute;
+  top:10px;right:10px;
+  background:var(--badge-bg);
+  color:#fff;
+  font-weight:900;
+  font-size:14px;
+  padding:8px 14px;
+  border-radius:999px;
+  line-height:1;
+}
+
+/* Meta (código / pzas) */
+.card__meta{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:8px;
+  padding:8px 2px 10px;
+  border-top:1px solid rgba(11,120,198,.35);
+  font-size:14px;
+  font-weight:900;
+}
+.card__code,.card__qty{ color:var(--blue) }
+
+/* Título + descripción */
+.card__title{
+  padding:10px 14px 0;
+  margin:0;
+  font-size:13px;
+  font-weight:900;
+}
+.card__desc{
+  padding:6px 14px 0;
+  text-align:center;
+  font-size:11px;
+  color:#6e6e6e;
+  line-height:1.35;
+  text-transform:uppercase;
+}
+
+/* Precios (3 columnas) */
+.card__prices{
+  margin-top:10px;
+  padding:0 14px;
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:10px;
+  font-size:11px;
+}
+.card__price{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+}
+.card__priceLbl{ font-weight:900; opacity:.75 }
+.card__priceVal{ margin-top:3px; font-weight:900 }
+
+/* Verdes (pirámide invertida) */
+.card__greens{
+  margin-top:10px;
+  padding:0 14px;
+  width:72%;
+  margin-left:auto;
+  margin-right:auto;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  column-gap:18px;
+  font-size:11px;
+}
+.card__green{
+  color:var(--promo-bg);
+  font-weight:900;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+.card__green--left{align-items:flex-start}
+.card__green--right{align-items:flex-end}
+
+/* Acciones (qty + agregar) */
+.card__actions{
+  margin-top:10px;
+  padding:12px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.qty{ display:flex;align-items:center;gap:10px }
+.qty__btn{
+  width:30px;height:30px;
+  border-radius:var(--btn-radius);
+  border:0;
+  background:var(--blue);
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+  line-height:1;
+}
+.qty__num{ min-width:16px;text-align:center;font-weight:900 }
+.card__add{
+  border:0;
+  padding:8px 14px;
+  border-radius:var(--btn-radius);
+  background:var(--blue);
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+  cursor:pointer;
+}
+
+/* Código barras */
+.card__barcode{
+  padding:10px 14px 14px;
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  border-top:1px solid rgba(0,0,0,.08);
+  color:var(--blue);
+  font-weight:800;
+}
+
+/* ======================================================
+   7) PAGINACIÓN (PUNTOS)
+   ====================================================== */
+.pager{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:14px auto 30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+}
+.pager__btn{
+  width:26px;height:26px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.15);
+  background:#fff;
+  cursor:pointer;
+  font-weight:900;
+}
+.pager__dot{
+  width:10px;height:10px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.25);
+  background:#fff;
+  cursor:pointer;
+}
+.pager__dot.is-active{
+  background:var(--blue);
+  border-color:var(--blue);
+}
+
+/* ======================================================
+   8) CONTACTO
+   ====================================================== */
+.contact{
+  width: var(--contact-max);
+  margin: 26px auto 40px;
+}
+.contact__capsule{
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:18px;
+  align-items:stretch;
+}
+.contact__map{
+  border-radius:var(--contact-radius);
+  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+  background:#fff;
+}
+.contact__map img{
+  width:100%;
+  height:100%;
+  min-height:150px;
+  object-fit:cover;
+  display:block;
+}
+.contact__panel{
+  background:var(--blue);
+  border-radius:var(--contact-radius);
+  padding:14px 18px 18px;
+  box-shadow:0 10px 25px rgba(0,0,0,.18);
+}
+.contact__title{
+  color:#fff;
+  font-style:italic;
+  font-weight:800;
+  font-size:24px;
+  margin:2px 0 12px;
+}
+.contact__grid{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:var(--contact-gap);
+  align-items:start;
+}
+.contact__item{ display:flex; gap:10px; color:#fff }
+.contact__icon{
+  width:var(--contact-icon);
+  height:var(--contact-icon);
+  display:grid;
+  place-items:center;
+  font-size:22px;
+  background:rgba(255,255,255,.15);
+  border-radius:999px;
+  flex:0 0 auto;
+}
+.contact__heading{ font-size:16px; font-weight:800; margin:0 0 4px }
+.contact__text p{ margin:0; font-size:12px; line-height:1.25; opacity:.95 }
+
+.contact__social{
+  margin-top:10px;
+  display:flex;
+  gap:10px;
+}
+.contact__socialBtn{
+  width:26px;height:26px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  color:#fff;
+  text-decoration:none;
+  background:rgba(255,255,255,.18);
+  font-weight:800;
+  font-size:14px;
+}
+
+/* ======================================================
+   9) FOOTER CTA
+   ====================================================== */
+.footerCta{
+  width:100%;
+  min-height:var(--footer-h);
+  display:grid;
+  grid-template-columns:1.05fr 0.95fr;
+  overflow:hidden;
+  border-radius:var(--footer-radius);
+  position:relative;
+}
+
+.footerCta__left{
+  background:linear-gradient(90deg, var(--blue) 0%, var(--promo-bg) 100%);
+  padding:60px var(--footer-left-pad);
+  color:#fff;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:18px;
+
+  align-items:center;
+}
+
+.footerCta__title{
+  width:min(var(--footer-form-w), 100%);
+  text-align:center;
+  font-size:18px;
+  font-weight:700;
+  margin:0;
+}
+
+.footerCta__form{
+  width:min(var(--footer-form-w), 100%);
+  margin:0 auto;
+  display:grid;
+  gap:10px;
+}
+
+.footerCta__label{ font-size:13px; opacity:.95 }
+
+.footerCta__input{
+  height:28px;
+  border-radius:999px;
+  border:0;
+  outline:none;
+  padding:0 14px;
+}
+
+.footerCta__btn{
+  margin-top:14px;
+  width:110px;
+  height:30px;
+  border:0;
+  border-radius:999px;
+  background:var(--blue);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+  justify-self:center;
+}
+
+/* Aviso (anclado al footer, no al form) */
+.footerCta__privacy{
+  position:absolute;
+  left:12px;
+  bottom:10px;
+  font-size:10px;
+  color:rgba(255,255,255,.92);
+  text-decoration:none;
+  z-index:5;
+}
+
+.footerCta__right{
+  background-image:url("/img/cuadro rojo.jpg");
+  background-size:cover;
+  background-position:center right;
+  background-repeat:no-repeat;
+}
+
+/* ======================================================
+   10) RESPONSIVE (TABLET)
+   ====================================================== */
+@media (max-width:1024px){
+  :root{
+    --nav-h:70px;
+    --pad-x:16px;
+    --side-w:110px;
+    --img-h:36px;
+    --gap:20px;
+    --fs:18px;
+
+    --promo-h:50px;
+    --promo-fs:18px;
+    --promo-radius:14px;
+    --promo-my:12px;
+
+    --footer-left-pad:40px;
+    --footer-h:380px;
+  }
+
+  .products{ grid-template-columns:repeat(2, 1fr) }
+
+  .contact__capsule{ grid-template-columns:200px 1fr }
+  .contact__grid{ grid-template-columns:repeat(2, 1fr) }
+
+  .footerCta{ grid-template-columns:1fr 1fr }
+}
+
+/* ======================================================
+   11) RESPONSIVE (MÓVIL)
+   ====================================================== */
+@media (max-width:767.98px){
+  :root{
+    --nav-h:60px;
+    --pad-x:14px;
+
+    --promo-h:46px;
+    --promo-fs:16px;
+    --promo-radius:12px;
+    --promo-my:10px;
+
+    --footer-left-pad:18px;
+    --footer-h:auto;
+    --footer-form-w:100%;
+  }
+
+  /* Promo centrado */
+  .promo{ justify-content:center; padding:0 16px }
+  .promo__text{ text-align:center }
+
+  /* Shopbar en columna */
+  .shopbar__row{ flex-direction:column; align-items:stretch }
+  .shopbar__actions{ justify-content:space-between }
+  .shopbar__cart{ align-self:flex-end }
+
+  /* Productos 1 columna */
+  .products{ grid-template-columns:1fr }
+
+  /* Contacto 1 columna */
+  .contact__capsule{ grid-template-columns:1fr }
+  .contact__grid{ grid-template-columns:1fr }
+  .contact__title{ text-align:center }
+
+  /* Footer 1 columna + imagen abajo */
+  .footerCta{ grid-template-columns:1fr }
+  .footerCta__right{ min-height:240px }
+  .footerCta__privacy{ text-shadow:0 2px 6px rgba(0,0,0,.6) }
+
+  /* Drawer móvil (tu menú) */
+  .navbar__toggle-open{
+    display:block;
+    margin-left:auto;
+    background:transparent;
+    border:0;
+    color:#fff;
+    font-size:30px;
+    cursor:pointer;
+  }
+
+  .navbar__links{
+    position:fixed;
+    top:0;left:0;
+    width:260px;
+    height:100vh;
+    background:var(--blue);
+    flex-direction:column;
+    align-items:stretch;
+    transform:translateX(-110%);
+    transition:transform .25s ease;
+    z-index:1001;
+  }
+
+  .navbar__mobile-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 16px;
+    border-bottom:1px solid rgba(255,255,255,.25);
+  }
+
+  .navbar__toggle-close{
+    display:block;
+    background:transparent;
+    border:0;
+    color:#fff;
+    font-size:26px;
+    cursor:pointer;
+  }
+
+  .navbar__links li{ border-bottom:1px solid rgba(255,255,255,.18) }
+  .navbar__link{
+    display:block;
+    padding:12px 16px;
+    font-size:16px;
+  }
+
+  .navbar__overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:1000;
+    display:none;
+  }
+
+  .navbar.navbar--open .navbar__links{ transform:translateX(0) }
+  .navbar.navbar--open .navbar__overlay{ display:block }
+}
+
+/* ======================================================
+   12) PERFIL
+   (después de la sección 11) RESPONSIVE)
+   ====================================================== */
+
+.profile{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:14px auto 40px;
+}
+
+/* Barra verde “Perfil” */
+.profile__titlebar{
+  height:var(--promo-h);
+  background:var(--promo-bg);
+  border-radius:var(--promo-radius);
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+}
+.profile__title{
+  color:#fff;
+  font-weight:900;
+  font-style:italic;
+}
+
+/* Paneles grises */
+.profile__panel{
+  margin-top:14px;
+  background:#f2f2f2;
+  border-radius:16px;
+  box-shadow:0 8px 18px rgba(0,0,0,.12);
+  border:1px solid rgba(0,0,0,.06);
+  padding:16px 18px 18px;
+}
+
+.profile__panelTitle{
+  margin:0 0 6px;
+  font-weight:900;
+  font-style:italic;
+  color:#111;
+  font-size:15px;
+}
+
+.profile__help{
+  margin:0 0 12px;
+  font-size:12px;
+  color:#444;
+}
+
+/* Grid 2 columnas como la imagen */
+.profile__grid2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px 26px;
+  align-items:end;
+}
+
+/* Campos */
+.field{display:flex;flex-direction:column;gap:6px}
+.field__label{font-size:12px;font-weight:800;color:#111}
+.field__input{
+  height:30px;
+  border-radius:10px;
+  border:2px solid rgba(11,120,198,.55);
+  outline:none;
+  padding:0 12px;
+  background:#fff;
+}
+.field__input:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(11,120,198,.12);
+}
+
+/* Botón guardar (derecha) */
+.profile__actions{
+  margin-top:12px;
+  display:flex;
+  justify-content:flex-end;
+}
+.btn{
+  border:0;
+  border-radius:999px;
+  height:28px;
+  padding:0 16px;
+  font-weight:900;
+  cursor:pointer;
+}
+.btn--primary{
+  background:var(--blue);
+  color:#fff;
+}
+
+/* Password (ojito) */
+.field--password{position:relative}
+.field__toggle{
+  position:absolute;
+  right:10px;
+  bottom:6px;
+  width:26px;height:26px;
+  border-radius:999px;
+  border:0;
+  background:transparent;
+  cursor:pointer;
+  color:var(--blue);
+  font-size:14px;
+}
+
+/* Confirmar contraseña en la izquierda (como tu screenshot) */
+.profile__grid2--password .field--span1{
+  grid-column:1 / 2;
+}
+
+/* ======================================================
+   13) PEDIDOS EN PROCESO
+   ====================================================== */
+
+.orders{margin-top:18px}
+
+.orders__titlebar{
+  background:var(--blue);
+  color:#fff;
+  border-radius:12px;
+  padding:10px 18px;
+  font-weight:900;
+  font-style:italic;
+}
+
+/* “tabla” */
+.orders__table{margin-top:10px}
+
+.orders__head,
+.orders__row{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  align-items:center;
+  padding:12px 18px;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+}
+
+.orders__head{
+  background:#e9e9e9;
+  font-weight:900;
+  font-style:italic;
+  color:#111;
+}
+
+.orders__row{
+  margin-top:12px;
+  background:#fff;
+}
+
+.orders__folio{font-weight:900;color:#0b3f7a}
+.orders__status{color:#0b3f7a}
+.orders__link{color:#0b3f7a;text-decoration:underline;font-weight:900}
+
+/* ======================================================
+   14) RESPONSIVE PERFIL
+   ====================================================== */
+@media (max-width:1024px){
+  .profile__grid2{grid-template-columns:1fr 1fr}
+}
+
+@media (max-width:767.98px){
+  .profile__grid2{grid-template-columns:1fr}
+  .profile__actions{justify-content:flex-end}
+  .orders__head,.orders__row{grid-template-columns:1fr 1fr 1fr}
+}
+
+/* ======================================================
+   15) ESTADO DE CUENTA
+   ====================================================== */
+/* Vistas por tab */
+.account__views{ margin-top:0; }
+.account__view{ display:none; }
+.account__view.is-active{ display:block; }
+
+/* Nota pequeña del crédito disponible */
+.account__note{
+  display:inline-block;
+  margin-left:10px;
+  font-size:10px;
+  font-weight:700;
+  color:#6b6b6b;
+  opacity:.95;
+}
+
+/* Acomodo del value + nota */
+.account__lines--credit .account__value{
+  display:flex;
+  align-items:baseline;
+  gap:10px;
+  flex-wrap:wrap;
+}
+
+.account{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:14px auto 40px;
+}
+
+/* Barra verde “Estado de cuenta” */
+.account__titlebar{
+  height:var(--promo-h);
+  background:var(--promo-bg);
+  border-radius:var(--promo-radius);
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+}
+.account__title{
+  color:#fff;
+  font-weight:900;
+  font-style:italic;
+}
+
+/* Buscador centrado debajo */
+.account__searchRow{
+  margin-top:10px;
+  display:flex;
+  justify-content:center;
+}
+.account__search{
+  width:min(420px, 100%);
+  height:34px;
+  border:2px solid var(--blue);
+  border-radius:999px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 12px;
+}
+.account__searchIcon{font-size:14px;opacity:.75}
+.account__searchInput{
+  width:100%;
+  border:0;
+  outline:none;
+  background:transparent;
+  font-size:13px;
+}
+
+/* Tabs (Folio / Crédito / Contacto) */
+.account__tabs{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  gap:0;
+}
+.account__tab{
+  height:32px;
+  min-width:110px;
+  padding:0 18px;
+  border:1.8px solid rgba(11,120,198,.55);
+  background:#efefef;
+  font-weight:900;
+  font-style:italic;
+  border-right:0;
+  cursor:pointer;
+}
+.account__tab:first-child{
+  border-top-left-radius:12px;
+  border-bottom-left-radius:12px;
+}
+.account__tab:last-child{
+  border-right:1.8px solid rgba(11,120,198,.55);
+  border-top-right-radius:12px;
+  border-bottom-right-radius:12px;
+}
+.account__tab.is-active{
+  background:#fff;
+}
+
+/* Caja resumen grande */
+.account__summary{
+  margin-top:0;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+  padding:18px 18px;
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:18px;
+  background:#fff;
+}
+
+/* Icono documento */
+.account__docIcon{
+  width:80px;
+  height:80px;
+  border-radius:16px;
+  background:#0b63a8;
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-size:42px;
+}
+
+/* Datos */
+.account__lines{
+  display:grid;
+  grid-template-columns:240px 1fr;
+  gap:10px 30px;
+  align-items:center;
+}
+.account__label{
+  font-weight:900;
+  color:#111;
+  font-size:14px;
+}
+.account__value{
+  color:#0b63a8;
+  font-weight:900;
+  font-size:14px;
+}
+
+/* ======================================================
+   16) FACTURAS POR PAGAR
+   ====================================================== */
+
+.invoices{ margin-top:16px; }
+
+.invoices__titlebar{
+  background:var(--blue);
+  color:#fff;
+  border-radius:12px;
+  padding:10px 18px;
+  font-weight:900;
+  font-style:italic;
+}
+
+.invoices__table{ margin-top:10px; }
+
+/* Encabezado tabla */
+.invoices__head{
+  display:grid;
+  grid-template-columns: 0.9fr 1.15fr 1.1fr 1.15fr 1fr 1fr 1.1fr 0.7fr;
+  gap:10px;
+  align-items:center;
+  padding:12px 14px;
+  background:#e9e9e9;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+  font-weight:900;
+  font-style:italic;
+  font-size:12px;
+}
+
+/* Filas */
+.invoices__row{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns: 0.9fr 1.15fr 1.1fr 1.15fr 1fr 1fr 1.1fr 0.7fr;
+  gap:10px;
+  align-items:center;
+  padding:14px 14px;
+  background:#fff;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+  font-weight:900;
+  color:#0b3f7a;
+  font-size:12px;
+}
+
+/* Columna CFDI (icons) */
+.invoices__cfdi{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+.invoices__icon{
+  width:26px;
+  height:26px;
+  border-radius:999px;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:10px;
+  color:#fff;
+  text-decoration:none;
+}
+.invoices__icon--xml{ background:#0b63a8; }
+.invoices__icon--pdf{ background:#0aa84f; }
+
+/* ======================================================
+   17) RESPONSIVE ESTADO DE CUENTA
+   ====================================================== */
+@media (max-width:1024px){
+  .account__lines{ grid-template-columns:220px 1fr; }
+  .invoices__head,
+  .invoices__row{
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-auto-rows:auto;
+  }
+}
+
+@media (max-width:767.98px){
+  .account__summary{ grid-template-columns:1fr; }
+  .account__docIcon{ margin:0 auto; }
+  .account__lines{ grid-template-columns:1fr; }
+  .account__tabs{ justify-content:center; flex-wrap:wrap; gap:8px; }
+  .account__tab{
+    border-right:1.8px solid rgba(11,120,198,.55);
+    border-radius:12px;
+  }
+
+  .invoices__head,
+  .invoices__row{
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ======================================================
+   18) CART TOAST / MODAL (al agregar producto)
+   ====================================================== */
+
+   /* Fondo oscuro */
+.cartToast__backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index: 5000;
+}
+
+/* Modal */
+.cartToast{
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(var(--toast-w), calc(100% - 26px));
+  background:#fff;
+  border-radius: var(--toast-radius);
+  box-shadow: var(--toast-shadow);
+  padding: 16px 18px 18px;
+  z-index: 5001;
+}
+
+/* Botón cerrar */
+.cartToast__close{
+  position:absolute;
+  right:14px;
+  top:10px;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:0;
+  background:rgba(11,120,198,.10);
+  color:var(--blue);
+  font-size:22px;
+  cursor:pointer;
+  line-height:1;
+}
+
+/* Título */
+.cartToast__title{
+  margin: 2px 0 12px;
+  text-align:center;
+  color: var(--blue);
+  font-weight:900;
+  font-size:18px;
+}
+
+/* Contenido principal */
+.cartToast__content{
+  display:grid;
+  grid-template-columns: 40px 120px 1fr;
+  gap: 12px;
+  align-items:center;
+}
+
+/* Burbuja verde */
+.cartToast__bubble{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  background: var(--promo-bg);
+  color:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+}
+
+/* Imagen */
+.cartToast__imgWrap{
+  width:120px;
+  height:92px;
+  background:#f3f5f7;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  padding:10px;
+}
+.cartToast__img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+/* Info */
+.cartToast__name{
+  font-weight:900;
+  color:#111;
+  margin-bottom:6px;
+  font-size:14px;
+}
+
+/* Filas */
+.cartToast__row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+/* Checkbox bonito */
+.cartToast__check,
+.cartToast__all{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  user-select:none;
+}
+.cartToast__check input,
+.cartToast__all input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.cartToast__checkBox{
+  width:22px;
+  height:22px;
+  border-radius:6px;
+  border:2px solid rgba(11,120,198,.55);
+  background:#fff;
+  display:grid;
+  place-items:center;
+}
+.cartToast__check input:checked + .cartToast__checkBox,
+.cartToast__all input:checked + .cartToast__checkBox{
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.cartToast__check input:checked + .cartToast__checkBox::after,
+.cartToast__all input:checked + .cartToast__checkBox::after{
+  content:"✓";
+  color:#fff;
+  font-weight:900;
+  font-size:14px;
+}
+
+/* Precio verde */
+.cartToast__price{
+  color: var(--promo-bg);
+  font-weight:900;
+  font-size:34px;
+  line-height:1;
+}
+.cartToast__price span{
+  font-size:14px;
+  vertical-align: super;
+}
+
+/* Qty + trash */
+.cartToast__row--actions{ margin-top:8px; }
+
+.cartToast__qtyBtn{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:0;
+  background: var(--blue);
+  color:#fff;
+  font-size:20px;
+  cursor:pointer;
+  line-height:1;
+}
+.cartToast__qtyNum{
+  min-width:30px;
+  text-align:center;
+  font-weight:900;
+  border-bottom:2px solid rgba(0,0,0,.25);
+  padding-bottom:2px;
+}
+
+.cartToast__trash{
+  margin-left:auto;
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:0;
+  background: rgba(0,0,0,.08);
+  cursor:pointer;
+}
+
+/* Footer (Todo + total) */
+.cartToast__footer{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+}
+.cartToast__total{
+  font-weight:900;
+  font-size:18px;
+  color:#111;
+}
+.cartToast__total span{ color:#111; }
+
+/* Botón ver carrito */
+.cartToast__btn{
+  margin-top:14px;
+  display:block;
+  width: 170px;
+  height:36px;
+  border-radius:999px;
+  background: var(--blue);
+  color:#fff;
+  font-weight:900;
+  text-decoration:none;
+  display:grid;
+  place-items:center;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* Responsive */
+@media (max-width:767.98px){
+  .cartToast__content{
+    grid-template-columns: 34px 1fr;
+    grid-template-rows:auto auto;
+  }
+  .cartToast__imgWrap{ grid-column:1 / -1; width:100%; height:120px; }
+}
+
+
+
+
+/* ======================================================
+   19) CARRITO (vista /carrito)
+   ====================================================== */
+
+/* ... CSS del carrito... */
+
+.cartBackBtn{
+  display:inline-block;
+  margin: 6px 0 14px;
+  font-weight: 900;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.cartBackBtn:hover{ text-decoration: underline; }
+/* Contenedor principal */
+.cartPage{
+  width: var(--cart-max);
+  margin: 18px auto 40px;
+}
+
+/* Header */
+.cartPage__top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.cartPage__crumbs{
+  color:#333;
+  font-size:16px;
+}
+.cartPage__crumbs span{ margin: 0 6px; opacity:.6; }
+.cartPage__crumbs a{ color: var(--blue); text-decoration:none; }
+
+.cartPage__heading{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.cartPage__cartIcon{ font-size:36px; }
+.cartPage__title{
+  margin:0;
+  font-weight:900;
+  letter-spacing:.5px;
+  font-size:22px;
+}
+
+/* Seleccionar todo */
+.cartPage__selectAll{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin: 8px 0 18px;
+  user-select:none;
+  font-size:22px;
+  color:#222;
+}
+.cartPage__selectAll input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.cartPage__checkBox{
+  width:22px;height:22px;border-radius:6px;
+  border:2px solid rgba(11,120,198,.55);
+  background:#fff;
+  display:grid;place-items:center;
+}
+.cartPage__selectAll input:checked + .cartPage__checkBox{
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.cartPage__selectAll input:checked + .cartPage__checkBox::after{
+  content:"✓";
+  color:#fff;
+  font-weight:900;
+  font-size:14px;
+}
+
+/* Layout */
+.cartLayout{
+  display:grid;
+  grid-template-columns: 1fr 340px;
+  gap: var(--cart-gap);
+  align-items:start;
+}
+
+/* ======================
+   ITEM (tarjeta izquierda)
+   ====================== */
+.cartItem{
+  border: var(--cart-border);
+  border-radius: var(--cart-radius);
+  background: var(--cart-card-bg);
+  padding: 14px;
+  display:grid;
+  grid-template-columns: 30px 140px 1fr 220px;
+  gap: 14px;
+  align-items:center;
+  margin-bottom: 16px;
+}
+
+/* checkbox item */
+.cartItem__check{
+  display:flex;align-items:center;justify-content:center;
+}
+.cartItem__check input{ position:absolute; opacity:0; pointer-events:none; }
+.cartItem__box{
+  width:18px;height:18px;border-radius:6px;
+  border:2px solid rgba(11,120,198,.55);
+  background:#fff; display:grid; place-items:center;
+}
+.cartItem__check input:checked + .cartItem__box{
+  background: var(--blue); border-color: var(--blue);
+}
+.cartItem__check input:checked + .cartItem__box::after{
+  content:"✓"; color:#fff; font-weight:900; font-size:12px;
+}
+
+/* imagen */
+.cartItem__imgWrap{
+  width:140px;height:92px;
+  background:#fff;
+  border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  overflow:hidden;
+  padding:10px;
+}
+.cartItem__img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+/* info */
+.cartItem__name{
+  margin:0 0 4px;
+  font-weight:900;
+  font-size:14px;
+}
+.cartItem__desc{
+  margin:0;
+  font-size:12px;
+  color:#444;
+  text-transform:uppercase;
+  line-height:1.3;
+}
+.cartItem__meta{
+  margin-top:6px;
+  color: var(--blue);
+  font-weight:800;
+  font-size:12px;
+  display:grid;
+  gap:2px;
+}
+
+/* derecha (precio + qty + eliminar + agregar) */
+.cartItem__right{
+  display:grid;
+  grid-template-columns: 1fr;
+  justify-items:end;
+  gap: 10px;
+}
+
+.cartItem__price{
+  color: var(--promo-bg);
+  font-weight:900;
+  font-size:22px;
+}
+
+.cartItem__controls{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.cartItem__btn{
+  width:30px;height:30px;
+  border-radius:999px;
+  border:0;
+  background: var(--blue);
+  color:#fff;
+  font-size:18px;
+  cursor:pointer;
+  line-height:1;
+}
+
+.cartItem__qty{
+  min-width:26px;
+  text-align:center;
+  font-weight:900;
+  border-bottom:2px solid rgba(0,0,0,.25);
+  padding-bottom:2px;
+}
+
+.cartItem__trash{
+  width:34px;height:34px;border-radius:999px;
+  border:0;background:rgba(0,0,0,.10);
+  cursor:pointer;
+}
+
+.cartItem__add{
+  border:0;
+  border-radius:999px;
+  background: var(--blue);
+  color:#fff;
+  font-weight:900;
+  font-size:11px;
+  padding:6px 12px;
+  cursor:pointer;
+}
+
+/* ======================
+   RESUMEN (derecha)
+   ====================== */
+.cartSummary{
+  border: var(--cart-border);
+  border-radius: var(--cart-radius);
+  background:#fff;
+  padding: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.12);
+}
+
+.cartSummary__title{
+  margin:0 0 12px;
+  font-weight:900;
+  font-size:14px;
+  color:#222;
+  text-align:center;
+}
+
+.cartSummary__row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding: 10px 0;
+  font-weight:800;
+  color:#222;
+}
+.cartSummary__row strong{ color: var(--blue); }
+
+.cartSummary__total{
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0,0,0,.12);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:900;
+  font-size:16px;
+}
+.cartSummary__total strong{ color: var(--promo-bg); }
+
+.cartSummary__btn{
+  width:100%;
+  height:34px;
+  border-radius:999px;
+  border:0;
+  font-weight:900;
+  cursor:pointer;
+  margin-top: 12px;
+}
+
+.cartSummary__btn--primary{
+  background: var(--blue);
+  color:#fff;
+}
+
+.cartSummary__btn--danger{
+  background: #e11;
+  color:#fff;
+}
+
+/* Responsive */
+@media (max-width:1024px){
+  .cartLayout{ grid-template-columns: 1fr; }
+  .cartSummary{ order: -1; }
+  .cartItem{ grid-template-columns: 30px 120px 1fr; }
+  .cartItem__right{ justify-items:start; }
+}
+@media (max-width:767.98px){
+  .cartPage__top{ flex-direction:column; }
+  .cartPage__selectAll{ font-size:18px; }
+}
+
+/* ======================================================
+   20) MODAL CONFIRMACIÓN DE PEDIDO
+   ====================================================== */
+
+.orderOk__backdrop{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.35);
+  z-index: 6500;
+}
+
+.orderOk{
+  position:fixed;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:min(var(--orderok-w), calc(100% - 28px));
+  background:#f3f3f3;
+  border-radius: var(--orderok-radius);
+  padding: 18px 18px 26px;
+  z-index: 6501;
+  text-align:center;
+}
+
+.orderOk__close{
+  position:absolute;
+  top:12px;
+  right:12px;
+  width:30px;
+  height:30px;
+  border-radius:999px;
+  border:0;
+  background: var(--promo-bg);
+  color:#fff;
+  font-weight:900;
+  font-size:20px;
+  line-height:1;
+  cursor:pointer;
+}
+
+.orderOk__icon{
+  margin: 10px auto 6px;
+  width: 170px;
+  height: 170px;
+  color: var(--promo-bg);
+  filter: drop-shadow(0 6px 10px rgba(0,0,0,.18));
+}
+
+.orderOk__icon svg{
+  width:100%;
+  height:100%;
+  display:block;
+}
+
+.orderOk__title{
+  margin: 8px 0 10px;
+  color: var(--promo-bg);
+  font-weight: 900;
+  font-size: 22px;
+  letter-spacing:.5px;
+}
+
+.orderOk__text{
+  margin: 0;
+  color:#2b2b2b;
+  font-weight: 800;
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+/* ======================================================
+   20) ADMINISTRAR (tabs + panel)
+   ====================================================== */
+
+.admin{
+  width:min(var(--products-max), calc(100% - var(--products-pad)));
+  margin:14px auto 40px;
+}
+
+.adminPanel[hidden]{ display:none; }
+
+/* Barra verde */
+.admin__titlebar{
+  height:var(--promo-h);
+  background:var(--promo-bg);
+  border-radius:var(--promo-radius);
+  display:flex;
+  align-items:center;
+  padding:0 22px;
+}
+.admin__title{
+  color:#fff;
+  font-weight:900;
+  font-style:italic;
+}
+
+/* Tabs */
+.adminTabs{
+  margin-top:10px;
+  display:flex;
+  align-items:center;
+  gap:0;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+  overflow:hidden;
+  background:#efefef;
+}
+.adminTabs__tab{
+  height:32px;
+  padding:0 18px;
+  border:0;
+  background:transparent;
+  font-weight:900;
+  font-style:italic;
+  cursor:pointer;
+  color:#111;
+}
+.adminTabs__tab + .adminTabs__tab{
+  border-left:1.8px solid rgba(11,120,198,.55);
+}
+.adminTabs__tab.is-active{
+  background:#fff;
+}
+
+/* Buscador + botón + */
+.adminBar{
+  margin-top:12px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.adminBar__search{
+  flex:1;
+  height:34px;
+  border:2px solid var(--blue);
+  border-radius:999px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:0 12px;
+  max-width: 520px;
+}
+.adminBar__searchIcon{font-size:14px;opacity:.75}
+.adminBar__input{
+  width:100%;
+  border:0;
+  outline:none;
+  background:transparent;
+  font-size:13px;
+}
+.adminBar__add{
+  width:34px;
+  height:34px;
+  border-radius:999px;
+  border:0;
+  background:var(--promo-bg);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  display:grid;
+  place-items:center;
+  line-height:1;
+}
+
+/* Tabla (la misma que ya traías) */
+.adminTable{ margin-top:12px; }
+.adminTable__head{
+  display:grid;
+  grid-template-columns: 1.1fr 0.9fr 0.9fr 1fr 0.9fr 1.1fr 0.9fr;
+  gap:10px;
+  align-items:center;
+  padding:12px 14px;
+  background:#e9e9e9;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+  font-weight:900;
+  font-style:italic;
+  font-size:12px;
+  color:#111;
+}
+.adminTable__row{
+  margin-top:12px;
+  display:grid;
+  grid-template-columns: 1.1fr 0.9fr 0.9fr 1fr 0.9fr 1.1fr 0.9fr;
+  gap:10px;
+  align-items:center;
+  padding:14px 14px;
+  background:#fff;
+  border:1.8px solid rgba(11,120,198,.55);
+  border-radius:12px;
+  font-weight:900;
+  color:#0b3f7a;
+  font-size:12px;
+}
+.adminTable__cell{display:flex;align-items:center}
+.adminTable__actions{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  align-items:flex-start;
+}
+.adminBtn{
+  height:24px;
+  padding:0 16px;
+  border:0;
+  border-radius:999px;
+  font-weight:900;
+  cursor:pointer;
+  color:#fff;
+  font-size:12px;
+}
+.adminBtn--edit{ background: var(--promo-bg); }
+.adminBtn--del{ background: var(--blue); }
+.adminTable__imgWrap{ justify-content:flex-end; }
+.adminTable__img{
+  width:54px;
+  height:34px;
+  object-fit:contain;
+  display:block;
+}
+
+/* ======================================================
+   21) ADMIN FORM (como la imagen)
+   ====================================================== */
+
+.adminForm{
+  margin-top:12px;
+}
+
+.adminForm__grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px 40px;
+  align-items:start;
+}
+
+/* Columnas */
+.adminForm__col{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+/* Labels e inputs */
+.adminForm__label{
+  font-size:12px;
+  font-weight:900;
+  color:#111;
+  margin-top: 4px;
+}
+
+.adminForm__input{
+  height:30px;
+  border-radius:10px;
+  border:2px solid rgba(11,120,198,.55);
+  outline:none;
+  padding:0 12px;
+  background:#fff;
+}
+
+.adminForm__textarea{
+  height:90px;
+  resize:none;
+  border-radius:12px;
+  border:2px solid rgba(11,120,198,.55);
+  outline:none;
+  padding:10px 12px;
+  background:#fff;
+}
+
+/* Preview imagen */
+.adminForm__preview{
+  margin-top: 10px;
+  width: 260px;
+  max-width: 100%;
+  height: 120px;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+.adminForm__previewImg{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:block;
+}
+
+/* Botón seleccionar imagen */
+.adminForm__fileBtn{
+  margin-top: 8px;
+  width: 170px;
+  height: 32px;
+  border-radius:999px;
+  border:2px solid rgba(11,120,198,.55);
+  background:#fff;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+  font-size:12px;
+  cursor:pointer;
+  color:#111;
+}
+.adminForm__file{
+  display:none;
+}
+
+/* Checkbox “Oferta” */
+.adminCheck{
+  margin-top: 8px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  user-select:none;
+  font-size:12px;
+  font-weight:900;
+  color:#111;
+}
+.adminCheck input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+.adminCheck__box{
+  width:18px;
+  height:18px;
+  border-radius:6px;
+  border:2px solid rgba(11,120,198,.55);
+  background:#fff;
+  display:grid;
+  place-items:center;
+}
+.adminCheck input:checked + .adminCheck__box{
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.adminCheck input:checked + .adminCheck__box::after{
+  content:"✓";
+  color:#fff;
+  font-weight:900;
+  font-size:12px;
+}
+
+/* Botón guardar abajo a la derecha */
+.adminForm__actions{
+  margin-top: 12px;
+  display:flex;
+  justify-content:flex-end;
+}
+.adminForm__save{
+  height:24px;
+  padding:0 18px;
+  border-radius:999px;
+  border:0;
+  background: var(--blue);
+  color:#fff;
+  font-weight:900;
+  cursor:pointer;
+  font-size:10px;
+}
+
+/* Responsive */
+@media (max-width:1024px){
+  .adminBar{flex-direction:column;align-items:flex-start}
+  .adminBar__search{max-width:100%}
+  .adminTable{ overflow:auto; }
+  .adminTable__head,
+  .adminTable__row{ min-width: 820px; }
+}
+
+@media (max-width:767.98px){
+  .adminTabs{flex-wrap:wrap}
+  .adminTabs__tab{flex:1 1 auto; min-width:140px}
+
+  .adminForm__grid{ grid-template-columns: 1fr; }
+  .adminForm__actions{ justify-content:flex-end; }
+}
