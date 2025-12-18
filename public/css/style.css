@@ -1822,6 +1822,14 @@ body{
    20) ADMINISTRAR (tabs + panel)
    ====================================================== */
 
+
+   .adminTabs__tab{
+  text-decoration:none;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+}
+
 .admin{
   width:min(var(--products-max), calc(100% - var(--products-pad)));
   margin:14px auto 40px;
@@ -2126,4 +2134,19 @@ body{
 
   .adminForm__grid{ grid-template-columns: 1fr; }
   .adminForm__actions{ justify-content:flex-end; }
+}
+
+
+/* ======================================================
+   ADMIN – ESPACIADO ENTRE BUSCADOR Y SECCIONES
+   ====================================================== */
+
+/* Pedidos */
+.orders__titlebar{
+  margin-top: 14px;
+}
+
+/* Documentos */
+.invoices__titlebar{
+  margin-top: 14px;
 }
