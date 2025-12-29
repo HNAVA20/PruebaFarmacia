@@ -12,7 +12,7 @@
 
   <!-- BARRA VERDE -->
   <section class="admin__titlebar">
-    <span class="admin__title">Pedidos</span>
+    <span class="admin__title">Administrar Pedidos</span>
   </section>
 
   <!-- SUBMENÚ -->

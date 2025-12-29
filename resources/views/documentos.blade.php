@@ -12,7 +12,7 @@
 
   <!-- BARRA VERDE -->
   <section class="admin__titlebar">
-    <span class="admin__title">Documentos</span>
+    <span class="admin__title">Administrar Documentos</span>
   </section>
 
   <!-- SUBMENÚ -->
